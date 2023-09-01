@@ -1,18 +1,14 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import {
-  Spinner,
-} from 'react-bootstrap';
+import MtButton from '../images/MtButton.png';
 
 export default function Loading() {
   return (
     <div className="text-center mt-5">
-      <Spinner
-        animation="border"
-        style={{
-          color: '#00BF67',
-          width: '100px',
-          height: '100px',
-        }}
+      <img
+        src={MtButton}
+        alt="Spinning Logo"
+        className="spinning-image"
       />
     </div>
   );
