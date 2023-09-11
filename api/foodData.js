@@ -46,7 +46,7 @@ const createFood = (food, uid) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const editFood = (food, uid) => new Promise((resolve, reject) => {
+const updateFood = (food, uid) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/foods/${food.id}`, {
     method: 'PUT',
     headers: {
@@ -70,11 +70,19 @@ const deleteFood = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const getFoodTypes = () => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/food_types`, {})
+    .then((response) => response.json())
+    .then(resolve)
+    .catch(reject);
+});
+
 export {
   getFoods,
   getSingleFood,
   getFoodsByUser,
   createFood,
-  editFood,
+  updateFood,
   deleteFood,
+  getFoodTypes,
 };

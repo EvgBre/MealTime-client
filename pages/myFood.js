@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import { getFoods } from '../api/foodData';
-import FoodCard from '../components/foodCard';
+import { Button } from 'react-bootstrap';
+import { getFoodsByUser } from '../api/foodData';
+import FoodCard from '../components/FoodCard';
+import NewFood from '../components/NewFood';
 import { useAuth } from '../utils/context/authContext';
 
 export default function MyFood() {
@@ -10,24 +12,38 @@ export default function MyFood() {
   const [foods, setFoods] = useState([]);
 
   const getAllFood = () => {
-    getFoods(user.uid).then(setFoods);
+    getFoodsByUser(user.uid).then(setFoods);
   };
   console.warn(foods);
 
+  const [showFoodModal, setShowFoodModal] = useState(false);
+
+  const handleClick = () => {
+    setShowFoodModal(true);
+  };
+
+  const handleCloseBtn = () => {
+    setShowFoodModal(false);
+  };
+
   useEffect(() => {
-    document.title = 'Meal Time';
-    getAllFood();
-  }, []);
+    getFoodsByUser(user.uid).then(setFoods);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <>
       <Head>
-        <title>My List</title>
+        <title>{user.first_name}&apos;s Food List</title>
       </Head>
+      <Button variant="dark" type="button" size="lg" className="add-mealtime-food-btn" onClick={handleClick}>
+        + Add Food
+      </Button>
+      <NewFood afterSubmit={getAllFood} show={showFoodModal} handleClose={handleCloseBtn} />
       <div className="text-center my-4">
         <div id="foodCards" className="d-flex flex-wrap">
           {foods.map((food) => (
-            <FoodCard key={food.id} foodObj={food} onUpdate={getAllFood} />
+            <FoodCard afterSubmit={getAllFood} key={food.id} foodObj={food} onUpdate={getAllFood} />
           ))}
         </div>
       </div>
