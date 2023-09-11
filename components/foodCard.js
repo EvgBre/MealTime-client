@@ -1,14 +1,26 @@
+/* eslint-disable react/forbid-prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card } from 'react-bootstrap';
-import Link from 'next/link';
 import { deleteFood } from '../api/foodData';
+import NewFood from './NewFood';
 
-function FoodCard({ foodObj, onUpdate }) {
+function FoodCard({ foodObj, onUpdate, afterSubmit }) {
+  const [showFoodModal, setShowFoodModal] = useState(false);
+
   const deleteThisFood = () => {
     if (window.confirm(`Delete ${foodObj.name}?`)) {
-      deleteFood(foodObj.user_id).then(() => onUpdate());
+      deleteFood(foodObj.id).then(() => onUpdate());
     }
+  };
+
+  const handleClick = () => {
+    setShowFoodModal(true);
+  };
+
+  const handleCloseBtn = () => {
+    setShowFoodModal(false);
   };
 
   return (
@@ -17,9 +29,9 @@ function FoodCard({ foodObj, onUpdate }) {
       <Card.Body>
         <Card.Title>{foodObj.name}</Card.Title>
         <p className="card-text bold">{foodObj.type.label}</p>
-        <Link href={`/food/edit/${foodObj.id}`} passHref>
-          <Button className="edit-button">Edit</Button>
-        </Link>
+
+        <Button className="food-btn edit-btn" variant="light" onClick={handleClick}>EDIT</Button>
+        <NewFood afterSubmit={afterSubmit} foodObj={foodObj} show={showFoodModal} handleClose={handleCloseBtn} />
         <Button onClick={deleteThisFood} className="delete-button m-2">
           Delete
         </Button>
@@ -33,10 +45,15 @@ FoodCard.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     image_url: PropTypes.string,
-    type: PropTypes.number,
-    user_id: PropTypes.string,
+    type: PropTypes.object,
+    user_id: PropTypes.object,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
+  afterSubmit: PropTypes.func,
+};
+
+FoodCard.defaultProps = {
+  afterSubmit: () => {},
 };
 
 export default FoodCard;
