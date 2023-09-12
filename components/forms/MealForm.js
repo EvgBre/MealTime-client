@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { Button, Form } from 'react-bootstrap';
-// import { Calendar } from 'primereact/calendar';
 import { useAuth } from '../../utils/context/authContext';
 import { createMeal, updateMeal } from '../../api/mealData';
 
@@ -20,7 +19,6 @@ export default function MealForm({ obj }) {
   const [currentMeal, setCurrentMeal] = useState(initialState);
   const router = useRouter();
   const { user } = useAuth();
-  // const [date, setDate] = useState(null);
 
   useEffect(() => {
     if (obj.id) {
@@ -30,10 +28,12 @@ export default function MealForm({ obj }) {
         mealTime: obj.meal_time,
         grams: obj.grams,
         dow: obj.dow,
-        userId: obj.user_id.id,
+        userId: user.id,
       });
     }
-  }, [obj, user]);
+    console.warn(currentMeal);
+    console.warn(obj);
+  }, [obj.id, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,7 +102,6 @@ export default function MealForm({ obj }) {
             type="date"
             onChange={handleChange}
           />
-          {/* <Calendar required value={date} onChange={(e) => setDate(e.value)} showIcon /> */}
         </Form.Group>
 
         <Button variant="primary" type="submit">

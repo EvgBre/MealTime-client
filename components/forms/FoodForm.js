@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
@@ -34,8 +35,6 @@ export default function FoodForm({ obj, handleClose, afterSubmit }) {
         userId: user.uid,
       });
     }
-    console.log('obj:', obj);
-    console.log('currentFood:', currentFood);
   }, [obj.id, user]);
 
   useEffect(() => {
@@ -75,8 +74,6 @@ export default function FoodForm({ obj, handleClose, afterSubmit }) {
         imageUrl: currentFood.imageUrl,
         userId: user.id,
       };
-      console.log(foodUpdate);
-      console.log('USER', user);
       updateFood(foodUpdate)
         .then(() => {
           afterSubmit();
