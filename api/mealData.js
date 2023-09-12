@@ -13,8 +13,14 @@ const getMeals = (uid) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getSingleMeal = (id) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/meals/${id}`)
+const getSingleMeal = (uid, id) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/meals/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${uid}`,
+    },
+  })
     .then((response) => response.json())
     .then(resolve)
     .catch(reject);

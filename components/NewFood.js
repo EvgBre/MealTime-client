@@ -19,7 +19,7 @@ export default function NewFood({
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Dialog>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Make a New Food Item!</Modal.Title>
         </Modal.Header>
 

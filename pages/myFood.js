@@ -12,7 +12,7 @@ export default function MyFood() {
   const [foods, setFoods] = useState([]);
 
   const getAllFood = () => {
-    getFoodsByUser(user.uid).then(setFoods);
+    getFoodsByUser(user.id).then(setFoods);
   };
   console.warn(foods);
 
@@ -27,7 +27,7 @@ export default function MyFood() {
   };
 
   useEffect(() => {
-    getFoodsByUser(user.uid).then(setFoods);
+    getFoodsByUser(user.id).then(setFoods);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 

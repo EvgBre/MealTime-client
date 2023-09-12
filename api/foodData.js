@@ -20,12 +20,11 @@ const getSingleFood = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getFoodsByUser = (userId, uid) => new Promise((resolve, reject) => {
+const getFoodsByUser = (userId) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/foods?userId=${userId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `${uid}`,
     },
   })
     .then((response) => response.json())
