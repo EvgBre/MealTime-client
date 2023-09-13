@@ -16,21 +16,12 @@ export default function ViewMeal() {
   const router = useRouter();
   const { id } = router.query;
   const [mealfoods, setMealFoods] = useState([]);
-  const [showMealFoodModal, setShowMealFoodModal] = useState(false);
 
   const getThisMeal = () => {
     getSingleMeal(user.uid, id).then(setMealDetails);
   };
   const showMealsFoods = () => {
     getMealFoods(id).then(setMealFoods);
-  };
-
-  const handleClick = () => {
-    setShowMealFoodModal(true);
-  };
-
-  const handleClose = () => {
-    setShowMealFoodModal(false);
   };
 
   useEffect(() => {
@@ -42,6 +33,16 @@ export default function ViewMeal() {
     if (window.confirm(`Delete ${mealDetails.name} from your meals?`)) {
       deleteMeal(mealDetails.id);
     }
+  };
+
+  const [show, setShow] = useState(false);
+
+  const handleClick = () => {
+    setShow(true);
+  };
+
+  const handleClose = () => {
+    setShow(false);
   };
 
   return (
@@ -78,11 +79,11 @@ export default function ViewMeal() {
       <Button variant="dark" type="button" size="lg" className="add-mealtime-mealfood-btn" onClick={handleClick}>
         + Add a Food
       </Button>
-      <MealFoodForm onUpdate={showMealsFoods} show={showMealFoodModal} handleClose={handleClose} />
+      <MealFoodForm onUpdate={showMealsFoods} show={show} handleClose={handleClose} />
       <div className="d-flex flex-wrap">
         {mealfoods.length === 0 ? (<p>No foods found</p>)
           : (mealfoods.map((mealfood) => (
-            <MealFoodCard key={mealfood.id} mealFoodObj={mealfood} onUpdate={showMealsFoods} />
+            <MealFoodCard key={mealfood.id} mealFoodObj={mealfood} id={id} onUpdate={showMealsFoods} />
           )))}
       </div>
       {console.warn(mealfoods)}

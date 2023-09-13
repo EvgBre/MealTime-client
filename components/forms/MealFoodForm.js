@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
@@ -10,10 +11,14 @@ const initialState = {
   grams: 0,
 };
 
-export default function MealFoodForm({ onUpdate, obj }) {
+export default function MealFoodForm({
+  onUpdate, obj, handleClose, show,
+}) {
   const [foods, setFoods] = useState([]);
   const [formInput, setFormInput] = useState(initialState);
   const { user } = useAuth();
+  const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
     getFoodsByUser(user.uid).then(setFoods);
@@ -24,7 +29,8 @@ export default function MealFoodForm({ onUpdate, obj }) {
     e.preventDefault();
 
     const food = {
-      name: formInput.name,
+      foodId: formInput.food_id,
+      mealId: id,
       grams: formInput.grams,
     };
       // Send POST request to your API
@@ -42,7 +48,7 @@ export default function MealFoodForm({ onUpdate, obj }) {
   };
 
   return (
-    <Modal>
+    <Modal show={show} onHide={handleClose}>
       <Modal.Dialog>
         <Modal.Header closeButton>
           <Modal.Title>Add a Food Item to this Meal!</Modal.Title>
@@ -58,7 +64,7 @@ export default function MealFoodForm({ onUpdate, obj }) {
                 name="food_id"
                 onChange={handleChange}
                 className="mb-3"
-                value={obj.food_id}
+                value={formInput.food_id}
                 required
               >
                 <option value="">Select a Food</option>
@@ -98,10 +104,12 @@ export default function MealFoodForm({ onUpdate, obj }) {
 
 MealFoodForm.propTypes = {
   obj: PropTypes.shape({
-    food_id: PropTypes.string,
+    food_id: PropTypes.number,
     grams: PropTypes.number,
   }),
   onUpdate: PropTypes.func,
+  show: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 MealFoodForm.defaultProps = {
