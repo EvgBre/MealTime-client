@@ -63,7 +63,7 @@ export default function ViewMeal() {
           <span style={{ fontWeight: 'bold' }}>Meal Time:</span> {mealDetails.meal_time}
         </div>
         <div className="d-flex" style={{ width: '70%', justifyContent: 'space-between' }}>
-          <Link href={`/meal/edit/${id}`} passHref>
+          <Link href={`/meal/edit/${mealDetails.id}`} passHref>
             <Button className="m-2" style={{ height: '50px', width: '140px' }}>
               <div className="d-flex align-items-center justify-content-center" style={{ height: '100%' }}>
                 Edit Meal

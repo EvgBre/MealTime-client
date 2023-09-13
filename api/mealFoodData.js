@@ -36,17 +36,6 @@ const deleteMealFood = async (id, mealId) => {
   return mealfood;
 };
 
-// const findFavorites = async (uid) => {
-//   const products = await getAllProducts(uid);
-//   const favorites = products.forEach((product) => {
-//     if (getFavoriteProduct(product.id, uid) === true) {
-//       console.warn(product);
-//       favorites.push(product);
-//     }
-//   });
-//   return favorites;
-// };
-
 export {
   getMealFoods,
   deleteMealFood,
