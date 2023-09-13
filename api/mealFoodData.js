@@ -11,37 +11,30 @@ const getMealFoods = async (id) => {
   return Object.values(foods);
 };
 
-const createMealFood = async (mealId) => {
-  const response = await fetch(`${clientCredentials.databaseURL}/foods/${mealId}/add`, {
-    method: 'Post',
+const createMealFood = async (payload) => {
+  const response = await fetch(`${clientCredentials.databaseURL}/foods/${payload.foodId}/add`, {
+    method: 'post',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify(payload),
   });
-  const foods = await response.json();
-  return Object.values(foods);
+  const newMealFood = await response.json();
+  return newMealFood;
 };
 
-const deleteMealFood = async (mealId) => {
-  const response = await fetch(`${clientCredentials.databaseURL}/foods/${mealId}/remove`, {
-    method: 'DELETE',
+const deleteMealFood = async (id, mealId) => {
+  const requestBody = JSON.stringify({ mealId });
+  const response = await fetch(`${clientCredentials.databaseURL}/foods/${id}/remove`, {
+    method: 'delete',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: requestBody,
   });
-  return response;
+  const mealfood = await response;
+  return mealfood;
 };
-
-// const findFavorites = async (uid) => {
-//   const products = await getAllProducts(uid);
-//   const favorites = products.forEach((product) => {
-//     if (getFavoriteProduct(product.id, uid) === true) {
-//       console.warn(product);
-//       favorites.push(product);
-//     }
-//   });
-//   return favorites;
-// };
 
 export {
   getMealFoods,

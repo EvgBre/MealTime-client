@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Button, Card } from 'react-bootstrap';
 import { deleteMealFood } from '../api/mealFoodData';
 
-export default function MealFoodCard({ mealFoodObj, onUpdate }) {
+export default function MealFoodCard({ mealFoodObj, onUpdate, id }) {
   const removeMealFood = () => {
     if (window.confirm(`Remove ${mealFoodObj.name} from this meal?`)) {
-      deleteMealFood(mealFoodObj.meal_id).then(() => onUpdate());
+      deleteMealFood(mealFoodObj.id, id).then(() => onUpdate());
     }
   };
   console.warn(mealFoodObj);
@@ -16,7 +16,7 @@ export default function MealFoodCard({ mealFoodObj, onUpdate }) {
       <Card.Body>
         <Card.Title>{mealFoodObj.name}</Card.Title>
         <Card.Text>
-          Some quick example text
+          Grams: {mealFoodObj.grams}
         </Card.Text>
         <Button onClick={removeMealFood} className="delete-button m-2">
           Remove
@@ -37,4 +37,5 @@ MealFoodCard.propTypes = {
     grams: PropTypes.number,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
 };

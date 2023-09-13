@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { useEffect, useState } from 'react';
@@ -8,17 +9,19 @@ import { useAuth } from '../../utils/context/authContext';
 import { createMeal, updateMeal } from '../../api/mealData';
 
 const initialState = {
+  id: null,
   name: '',
   mealTime: '',
   dow: '',
   grams: 0,
-  userId: '',
+  userId: {},
 };
 
 export default function MealForm({ obj }) {
   const [currentMeal, setCurrentMeal] = useState(initialState);
-  const router = useRouter();
   const { user } = useAuth();
+  const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
     if (obj.id) {
@@ -31,9 +34,7 @@ export default function MealForm({ obj }) {
         userId: user.id,
       });
     }
-    console.warn(currentMeal);
-    console.warn(obj);
-  }, [obj.id, user]);
+  }, [obj, id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +50,7 @@ export default function MealForm({ obj }) {
     e.preventDefault();
     if (obj.id) {
       const mealUpdate = {
-        id: obj.id,
+        id: currentMeal.id,
         name: currentMeal.name,
         grams: currentMeal.grams,
         mealTime: currentMeal.mealTime,

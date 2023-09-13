@@ -3,13 +3,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
 import { Button, Form } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
 import { createFood, updateFood, getFoodTypes } from '../../api/foodData';
 
 const initialState = {
   name: '',
+  foodType: 0,
   imageUrl: '',
   userId: '',
 };
@@ -22,24 +22,23 @@ export default function FoodForm({ obj, handleClose, afterSubmit }) {
     provide some default values.
     */
   const [currentFood, setCurrentFood] = useState(initialState);
-  const router = useRouter();
   const { user } = useAuth();
+
+  useEffect(() => {
+    getFoodTypes().then(setFoodTypes);
+  }, []);
 
   useEffect(() => {
     if (obj.id) {
       setCurrentFood({
         id: obj.id,
         name: obj.name,
-        foodType: obj.type,
+        foodType: obj.type.id,
         imageUrl: obj.image_url,
         userId: user.uid,
       });
     }
   }, [obj.id, user]);
-
-  useEffect(() => {
-    getFoodTypes().then(setFoodTypes);
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,7 +69,7 @@ export default function FoodForm({ obj, handleClose, afterSubmit }) {
       const foodUpdate = {
         id: currentFood.id,
         name: currentFood.name,
-        foodType: getFoodTypeId(currentFood?.foodType),
+        foodType: Number(currentFood?.foodType),
         imageUrl: currentFood.imageUrl,
         userId: user.id,
       };
@@ -107,13 +106,13 @@ export default function FoodForm({ obj, handleClose, afterSubmit }) {
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Food Type</Form.Label>
-          <Form.Select aria-label="foodtype" name="foodType" onChange={handleChange} required value={currentFood?.foodType?.label}>
+          <Form.Select aria-label="foodtype" name="foodType" onChange={handleChange} required value={currentFood.foodType}>
             <option>Pick a Type</option>
             {
                 foodTypes.map((type) => (
                   <option
                     key={type.id}
-                    // value={type.id}
+                    value={type.id}
                   >
                     {type.label}
                   </option>

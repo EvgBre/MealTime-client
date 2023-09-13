@@ -14,7 +14,6 @@ export default function MyFood() {
   const getAllFood = () => {
     getFoodsByUser(user.id).then(setFoods);
   };
-  console.warn(foods);
 
   const [showFoodModal, setShowFoodModal] = useState(false);
 

@@ -1,44 +1,118 @@
-# React/Next.js Django Auth Template
+# MealTime Client
 
-## Topics
-- [Get Started](#getting-started)
-- [Starting the Project](#starting-the-project)
-___
-## Getting Started
-### Use Template
-#### 1. To get started, click the GREEN "Use this Template" button at the top of the repo
-<img width="915" alt="Screen Shot 2022-07-06 at 12 54 01 PM" src="https://user-images.githubusercontent.com/29741570/177612998-4aac9237-5a1e-4f13-8ae0-468587521564.png">
+Studio Star is all-in-one, digital platform for private lesson teachers and students to document and access lesson assignments, log practice tasks, communicate studio-wide or individually, and provide or participate in practice incentives. Built with both remote and in-person teaching in mind, Studio Star is the "virtual assignment book" you've been waiting for!
 
-#### 2. Make sure YOUR github account is selected in the dropdown and name your project
-<img width="763" alt="Screen Shot 2022-07-06 at 12 54 48 PM" src="https://user-images.githubusercontent.com/29741570/177613126-dd38f678-7553-4f27-8a4a-75680f14d71e.png">
+## App Users <!-- This is a scaled down user persona -->
+- Private lesson teachers who want a place to communicate with students and their families, document lesson assignments, and provide practice incentives.
+- Students who want to log into the platform to see assignments, document practicing, and communicate with teachers. 
+- Family members who want to support their student by viewing assignments and information posted by teachers. 
+- Music lesson business owners who need a single platform where all employee teachers can have separate studio rosters. 
 
-#### 3. Clone your new repo to your local machine
-#### 4. Go to the **NEXT** section
+## Features <!-- List your app features using bullets! Do NOT use a paragraph. No one will read that! -->
+- Studio Star uses Google authentication for users to log in, prior to registering for the app as a teacher or student. 
+- If the user is a teacher, they create and name their studio. 
+- If the user is a student, they select one or more teachers to enroll into their studio. 
+- Teachers have a roster page showing students enrolled in their studio, who they may unenroll at any time. 
+- From the roster page, teachers can navigate to any student's page to view, create, update, or delete assignments.
+- Within each assignment, teachers can view, create, update, or delete specific tasks.
+- Students can view all assignments and tasks created by their teacher on their personal assignment page.
+- On each assigned task, students (and teachers) can choose, view, and delete stickers to log their practicing. Once the practice goal on a task has been met, the task updates to "complete."
+- Both teachers and students can view a profile page with their user details. 
+- Students may return to the enrollment page at any time to unenroll or enroll with alternate teachers. 
 
-## Starting the Project
-1. Create a Firebase project and set up authentication. Use [these videos](https://vimeo.com/showcase/codetracker-firebase) as a refresher if needed.
-1. Create a `.env` file at the root of the project
-1. Copy/Paste the contents of the `.env.sample` file to your newly created `.env` file.
-1. Copy over all of your Firebase values into the `.env` file.
-1. Open the `package.json` file and change the `name` property to the name of your application, and `author` to  your name.
-1. From your command line, be in the root directory and run `npm install` OR `npm i` for short.
-1. Next, run `npm run prepare`. This command sets up husky to track eslint errors on commit that will make your deploy fail on Netlify.
-1. To start your application, run `npm run dev`. THIS IS THE COMMAND YOU WILL USE TO RUN YOUR DEVELOPMENT SERVER FROM NOW ON.
-1. Open [http://localhost:3000](http://localhost:3000) with your browser.
-
-### If you see this, you are set to go!
-<img width="450" alt="Screen Shot 2022-07-06 at 1 07 27 PM" src="https://user-images.githubusercontent.com/29741570/177615077-9b6a75bc-0260-4d29-bb88-bd95a3140687.png">
+## Relevant Links <!-- Link to all the things that are required outside of the ones that have their own section -->
+- [ERD](https://dbdiagram.io/d/64dab2db02bd1c4a5ec5752e)
+- [Wireframes](https://www.figma.com/file/Eebb7ycjEUCTXMoZrNtSWd/MealTime-Wireframe?type=design&node-id=0-1&mode=design&t=da3tNYD4ww0ZTrCo-0)
+- [Project Board](https://github.com/users/EvgBre/projects/3)
+- [Server-side Repository](https://github.com/EvgBre/mealtime-server/tree/main)
 
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Code Snippet <!-- OPTIONAL, but doesn't hurt -->
+```
+  const handleSubmit = (e) => {
+    // Prevent form from being submitted
+    e.preventDefault();
 
-**NOTES:** 
-- If you see the following error, you did not follow all the setup steps correctly and failed to add your Firebase creds. Go back and do that NOW.
+    const food = {
+      foodId: formInput.food_id,
+      mealId: id,
+      grams: formInput.grams,
+    };
+      // Send POST request to your API
+    createMealFood(food).then(() => {
+      onUpdate();
+    });
+  };
 
-<img width="1043" alt="Screen Shot 2022-07-06 at 11 18 45 AM" src="https://user-images.githubusercontent.com/29741570/177612501-c2628f18-4bbd-4de9-aae6-27ffba1172d6.png">
-        
-## Learn More about Next.js
-To learn more about Next.js, take a look at the following resources:
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormInput((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Dialog>
+        <Modal.Header closeButton>
+          <Modal.Title>Add a Food Item to this Meal!</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Food Select</Form.Label>
+              <Form.Select
+                aria-label="Food"
+                name="food_id"
+                onChange={handleChange}
+                className="mb-3"
+                value={formInput.food_id}
+                required
+              >
+                <option value="">Select a Food</option>
+                {
+            foods.map((food) => (
+              <option
+                key={food.id}
+                value={food.id}
+              >
+                {food.name}
+              </option>
+            ))
+          }
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>How many grams of this food are you having?</Form.Label>
+              <Form.Control
+                name="grams"
+                required
+                value={formInput.grams}
+                type="number"
+                onChange={handleChange}
+              />
+            </Form.Group>
+
+            <Button variant="dark" type="submit">
+              Submit
+            </Button>
+          </Form>
+
+        </Modal.Body>
+      </Modal.Dialog>
+    </Modal>
+  );
+```
+
+## Project Screenshots <!-- These can be inside of your project. Look at the repos from class and see how the images are included in the readme -->
+- TBA
+
+## Video Walkthrough
+- TBA
+
+
+## Contributors
+- [Evan Breland](https://github.com/EvgBre)
